@@ -296,7 +296,16 @@ class TestOptimze(unittest.TestCase):
             print("iterate",p, numpy.square(D).sum())
             return D
 
-        from scipy.optimize import leastsq
+        try:
+            from scipy.optimize import leastsq
+        except ImportError:
+            import sys
+            print('path')
+            print('\n=='.join(sys.path))
+            with open('/proc/self/maps') as F:
+                print("===========================")
+                print(F.read())
+            raise
 
         p1, ier = leastsq(resid, p0)
         print('final',p1,'expect',self._expect_K)
