@@ -826,8 +826,8 @@ void  ElementRFCavity::GetCavMatParams(const int cavi, const double beta_tab[], 
         }
     }
 
-    if (false) {
-        std::cout << "\n";
+    if (true) {
+        std::cout << "\nCavTLMLineTab\n";
         CavTLMLineTab.show(std::cout);
     }
 }
@@ -956,6 +956,9 @@ void ElementRFCavity::GenCavMat(const int cavi, const double dis, const double E
                 S    = CavTLMLineTab.S[n-1];
                 kfdx = real.IonZ*V0/sqr(beta)/gamma/IonA/AU*(T*cos(IonFy)-S*sin(IonFy))/Rm;
                 kfdy = kfdx;
+                std::cout<<" X EFocus1 kfdx="<<kfdx<<"\n";
+                std::cout<<" Y "<<CavTLMLineTab.E0[n-1]<<" "<<EfieldScl<<" "<<beta
+                        <<" "<<gamma<<" "<<IonFy<<" "<<Rm<<"\n Z "<<T<<" "<<S<<"\n";
 
                 Mprob(1, 0) = kfdx;
                 Mprob(3, 2) = kfdy;
@@ -966,6 +969,7 @@ void ElementRFCavity::GenCavMat(const int cavi, const double dis, const double E
                 S    = CavTLMLineTab.S[n-1];
                 kfdx = real.IonZ*V0/sqr(beta)/gamma/IonA/AU*(T*cos(IonFy)-S*sin(IonFy))/Rm;
                 kfdy = kfdx;
+                std::cout<<" X EFocus2 kfdx="<<kfdx<<"\n";
 
                 Mprob(1, 0) = kfdx;
                 Mprob(3, 2) = kfdy;
@@ -976,6 +980,7 @@ void ElementRFCavity::GenCavMat(const int cavi, const double dis, const double E
                     T   = CavTLMLineTab.T[n-1];
                     S   = CavTLMLineTab.S[n-1];
                     dpy = real.IonZ*V0/sqr(beta)/gamma/IonA/AU*(T*cos(IonFy)-S*sin(IonFy));
+                    std::cout<<" X EDipole dpy="<<dpy<<"\n";
 
                     Mprob(3, 6) = dpy;
                     Mtrans      = prod(Mprob, Mtrans);
@@ -987,6 +992,7 @@ void ElementRFCavity::GenCavMat(const int cavi, const double dis, const double E
                     S    = CavTLMLineTab.S[n-1];
                     kfdx =  real.IonZ*V0/sqr(beta)/gamma/IonA/AU*(T*cos(IonFy)-S*sin(IonFy))/Rm;
                     kfdy = -kfdx;
+                    std::cout<<" X EQuad kfdx="<<kfdx<<"\n";
 
                     Mprob(1, 0) = kfdx;
                     Mprob(3, 2) = kfdy;
@@ -999,6 +1005,7 @@ void ElementRFCavity::GenCavMat(const int cavi, const double dis, const double E
                     S    = CavTLMLineTab.S[n-1];
                     kfdx = -MU0*C0*real.IonZ*V0/beta/gamma/IonA/AU*(T*cos(IonFy+M_PI/2e0)-S*sin(IonFy+M_PI/2e0))/Rm;
                     kfdy = kfdx;
+                    std::cout<<" X HMono kfdx="<<kfdx<<"\n";
 
                     Mprob(1, 0) = kfdx;
                     Mprob(3, 2) = kfdy;
@@ -1010,6 +1017,7 @@ void ElementRFCavity::GenCavMat(const int cavi, const double dis, const double E
                     T   = CavTLMLineTab.T[n-1];
                     S   = CavTLMLineTab.S[n-1];
                     dpy = -MU0*C0*real.IonZ*V0/beta/gamma/IonA/AU*(T*cos(IonFy+M_PI/2e0)-S*sin(IonFy+M_PI/2e0));
+                    std::cout<<" X HDipole dpy="<<dpy<<"\n";
 
                     Mprob(3, 6) = dpy;
                     Mtrans      = prod(Mprob, Mtrans);
@@ -1029,6 +1037,8 @@ void ElementRFCavity::GenCavMat(const int cavi, const double dis, const double E
                     S    = CavTLMLineTab.S[n-1];
                     kfdx = -MU0*C0*real.IonZ*V0/beta/gamma/IonA/AU*(T*cos(IonFy+M_PI/2e0)-S*sin(IonFy+M_PI/2e0))/Rm;
                     kfdy = -kfdx;
+                    std::cout<<" X HQuad kfdx="<<kfdx<<"\n Y "<<real.IonZ<<" "<<V0<<" "<<T<<" "<<S
+                            <<"\n Z "<<s<<" "<<beta<<" "<<gamma<<" "<<IonFy<<" "<<Rm<<"\n";
 
                     Mprob(1, 0) = kfdx;
                     Mprob(3, 2) = kfdy;
@@ -1042,6 +1052,7 @@ void ElementRFCavity::GenCavMat(const int cavi, const double dis, const double E
                 gamma  = gamma_tab[seg];
                 kfac   = 2e0*M_PI/(beta*Lambda);
                 Accel  = CavTLMLineTab.Accel[n-1];
+                std::cout<<" X AccGap Accel="<<Accel<<"\n";
 
                 Mprob(1, 1) = Accel;
                 Mprob(3, 3) = Accel;
@@ -1053,6 +1064,7 @@ void ElementRFCavity::GenCavMat(const int cavi, const double dis, const double E
             }
 //            std::cout << Elem << "\n";
 //            PrtMat(Mprob);
+            std::cout<<"Elem "<<Name<<":"<<Elem<<"\n Mtrans "<<Mtrans<<"\nMprob "<<Mprob<<"\n";
         }
     }
 
