@@ -695,15 +695,8 @@ struct ElementSolenoid : public Moment2ElementBase
 
         get_misalign(ST);
 
-        std::cout<<"SOL "<<Brho<<" "<<K<<" "<<L<<" "<<transfer(state_t::PS_S, state_t::PS_PS)
-                <<"\n misalign    : "<<misalign
-                <<"\n misalign_inv: "<<misalign_inv
-                <<"\n transfer    : "<<transfer
-                <<"\n";
-
         scratch  = prod(transfer, misalign);
         transfer = prod(misalign_inv, scratch);
-        std::cout<<"SOl  transfer    : "<<transfer<<"\n";
 
         last_Kenergy_in = last_Kenergy_out = ST.real.IonEk; // no energy gain
     }
