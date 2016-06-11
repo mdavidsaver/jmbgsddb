@@ -41,7 +41,7 @@ Moment2State::Moment2State(const Config& c)
 
     std::string vectorname(c.get<std::string>("vector_variable", "moment0"));
     std::string matrixname(c.get<std::string>("matrix_variable", "initial"));
-    std::vector<double> ics;
+    std::vector<double> ics, nchg;
 
     if(multistate) {
         ics = c.get<std::vector<double> >("IonChargeStates");
@@ -49,12 +49,10 @@ Moment2State::Moment2State(const Config& c)
             throw std::invalid_argument("IonChargeStates w/ length 0");
         if(icstate>=ics.size())
             throw std::invalid_argument("IonChargeStates[cstate] is out of bounds");
-        ref.IonZ = ics[icstate];
 
-        std::vector<double> nchg = c.get<std::vector<double> >("NCharge");
+        nchg = c.get<std::vector<double> >("NCharge");
         if(nchg.size()!=ics.size())
             throw std::invalid_argument("NCharge[] and IonChargeStates[] must have equal length");
-        ref.IonQ = nchg[icstate];
 
         std::string icstate_s(boost::lexical_cast<std::string>(icstate));
         vectorname  += icstate_s;
@@ -101,10 +99,13 @@ Moment2State::Moment2State(const Config& c)
     real.recalc();
 
     if(!multistate) {
-        real.IonZ = ref.IonZ       = c.get<double>("IonZ", 0e0);
+        real.IonZ = ref.IonZ = c.get<double>("IonZ", 0e0);
+        ref.IonQ = real.IonQ = c.get<double>("IonQ", 1e0);
     } else {
         ref.IonZ  = ics[0];
         real.IonZ = ics[icstate];
+        ref.IonQ = nchg[0];
+        real.IonQ = nchg[icstate];
     }
 }
 
