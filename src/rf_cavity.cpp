@@ -231,11 +231,11 @@ void ElementRFCavity::TransFacts(const int cavilabel, double beta, const double 
     std::ostringstream  strm;
 
     // For debugging of TTF function.
-    if (false) {
+    if (skipcache) {
         calTransfac(CavData, 2, CaviIonK, true, Ecen, T, Tp, S, Sp, V0);
         V0 *= EfieldScl;
-        printf("\n%19.12e %19.12e %19.12e %19.12e %19.12e %19.12e\n", Ecen, T, Tp, S, Sp, V0);
-//        return;
+//        printf("\n%19.12e %19.12e %19.12e %19.12e %19.12e %19.12e\n", Ecen, T, Tp, S, Sp, V0);
+        return;
     }
 
     switch (cavilabel) {
@@ -408,7 +408,7 @@ void ElementRFCavity::TransitFacMultipole(const int cavi, const std::string &fla
     double Ecen, Tp, Sp, V0;
 
     // For debugging of TTF function.
-    if (false) {
+    if (skipcache) {
         calTransfac(mlptable, get_column(flabel), CaviIonK, false, Ecen, T, Tp, S, Sp, V0);
         return;
     }
