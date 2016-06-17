@@ -7,6 +7,7 @@
 
 #define NO_IMPORT_ARRAY
 #define PY_ARRAY_UNIQUE_SYMBOL FLAME_PyArray_API
+#define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
 #include <numpy/ndarrayobject.h>
 
 #if SIZE_MAX==NPY_MAX_UINT32
@@ -102,7 +103,11 @@ PyObject *PyState_getattro(PyObject *raw, PyObject *attr)
         PyRef<> obj(PyArray_SimpleNewFromData(info.ndim, dims, pytype, info.ptr));
 
         Py_INCREF(state);
-        PyArray_BASE(obj.py()) = (PyObject*)state;
+#if NPY_API_VERSION < NPY_1_7_API_VERSION
+        PyArray_BASE(obj.as<PyArrayObject>()) = (PyObject*)state;
+#else
+        PyArray_SetBaseObject(obj.as<PyArrayObject>(), (PyObject*)state);
+#endif
 
         return obj.releasePy();
     } CATCH()

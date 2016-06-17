@@ -8,6 +8,7 @@
 
 #define NO_IMPORT_ARRAY
 #define PY_ARRAY_UNIQUE_SYMBOL FLAME_PyArray_API
+#define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
 #include <numpy/ndarrayobject.h>
 
 /** Translate python dict to Config
@@ -50,8 +51,8 @@ void Dict2Config(Config& ret, PyObject *dict, unsigned depth)
 
         } else if(PyArray_Check(value)) { // array (ndarray)
             PyRef<> arr(PyArray_ContiguousFromAny(value, NPY_DOUBLE, 0, 2));
-            double *buf = (double*)PyArray_DATA(arr.py());
-            std::vector<double> temp(PyArray_SIZE(arr.py()));
+            double *buf = (double*)PyArray_DATA(arr.as<PyArrayObject>());
+            std::vector<double> temp(PyArray_SIZE(arr.as<PyArrayObject>()));
             std::copy(buf, buf+temp.size(), temp.begin());
 
             ret.swap<std::vector<double> >(kname, temp);
@@ -111,7 +112,7 @@ struct confval : public boost::static_visitor<PyObject*>
     {
         npy_intp dims[]  = {(npy_intp)v.size()};
         PyRef<> obj(PyArray_SimpleNew(1, dims, NPY_DOUBLE));
-        std::copy(v.begin(), v.end(), (double*)PyArray_DATA(obj.py()));
+        std::copy(v.begin(), v.end(), (double*)PyArray_DATA(obj.as<PyArrayObject>()));
         return obj.release();
     }
 

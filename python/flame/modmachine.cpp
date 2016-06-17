@@ -4,6 +4,7 @@
 #include "flame/base.h"
 #include "pyflame.h"
 
+#define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
 
 #define TRY PyMachine *machine = (PyMachine*)raw; try
 
