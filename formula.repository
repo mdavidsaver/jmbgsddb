@@ -1,0 +1,4 @@
+\form#0:$ state = transfer * state $
+\form#1:\begin{eqnarray*} state = Transfer \cdot state \end{eqnarray*}
+\form#2:\begin{eqnarray*} State = Transfer \cdot State \end{eqnarray*}
+\form#3:\begin{eqnarray*} State &=& Transfer \cdot State \cdot Transfer^t \\ moment0 &=& Transfer \cdot moment0 \end{eqnarray*}
